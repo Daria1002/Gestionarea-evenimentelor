@@ -1,0 +1,50 @@
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class TestGestionareParticipanti {
+
+    @Test
+    public void testAddAndRetrieveParticipant() {
+        GestionareParticipanti gp = new GestionareParticipanti();
+        Participant participant = new Participant("John Doe", "john.doe@example.com");
+        gp.addParticipant(participant);
+
+        Participant retrieved = gp.getParticipantByEmail("john.doe@example.com");
+        assertNotNull(retrieved);
+        assertEquals("John Doe", retrieved.getNume());
+        assertEquals("john.doe@example.com", retrieved.getEmail());
+    }
+
+    @Test
+    public void testModifyParticipant() {
+        GestionareParticipanti gp = new GestionareParticipanti();
+        Participant participant = new Participant("John Doe", "john.doe@example.com");
+        gp.addParticipant(participant);
+
+        Participant newParticipant = new Participant("Jane Doe", "john.doe@example.com");
+        gp.deleteParticipant("john.doe@example.com");
+        gp.addParticipant(newParticipant);
+
+        Participant modified = gp.getParticipantByEmail("john.doe@example.com");
+        assertEquals("Jane Doe", modified.getNume());
+    }
+
+    @Test
+    public void testDeleteParticipant() {
+        GestionareParticipanti gp = new GestionareParticipanti();
+        Participant participant = new Participant("John Doe", "john.doe@example.com");
+        gp.addParticipant(participant);
+
+        assertTrue(gp.deleteParticipant("john.doe@example.com"));
+        assertNull(gp.getParticipantByEmail("john.doe@example.com"));
+    }
+
+    @Test
+    public void testGetAllParticipants() {
+        GestionareParticipanti gp = new GestionareParticipanti();
+        gp.addParticipant(new Participant("John Doe", "john.doe@example.com"));
+        gp.addParticipant(new Participant("Jane Doe", "jane.doe@example.com"));
+
+        assertEquals(2, gp.getAllParticipants().size());
+    }
+}
